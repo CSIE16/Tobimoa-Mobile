@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/bmjua"
+            android:text="토비모아"
+            android:textColor="#374883   "
+            android:textSize="80sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bmjua"
+            android:gravity="center"
+            android:text="Registeration"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="20sp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|clip_vertical|center_horizontal"
+            android:adjustViewBounds="true"
+            android:maxWidth="250dp"
+            android:src="@drawable/ppo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:paddingTop="20sp">
+
+            <TextView
+                android:id="@+id/textViewPhone"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/border_drawable"
+                android:fontFamily="@font/bmjua"
+                android:gravity="center"
+                android:text="CELLPHONE"
+                android:textColor="#374883"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextPh"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/border1_drawable"
+                android:ems="10"
+                android:hint="휴대폰번호를 입력해주세요."
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp">
+
+            <TextView
+                android:id="@+id/textViewPass"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/border_drawable"
+                android:fontFamily="@font/bmjua"
+                android:gravity="center"
+                android:text="PASSWORD"
+                android:textColor="#374883"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextpass"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/border1_drawable"
+                android:ems="10"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0sp"
+            android:layout_gravity="left"
+            android:layout_weight="2">
+
+            <Button
+                android:id="@+id/gotoHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="250sp"
+                android:layout_marginRight="20sp"
+                android:layout_weight="1"
+                android:background="@drawable/button_drawable"
+                android:fontFamily="@font/bmjua"
+                android:text="등록"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/homeButton"
+                android:layout_width="0sp"
+                android:layout_height="70sp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#ffffff"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/home" />
+
+            <ImageButton
+                android:id="@+id/userButton"
+                android:layout_width="0dp"
+                android:layout_height="70sp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#8096E4"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/user" />
+
+            <ImageButton
+                android:id="@+id/locationButton"
+                android:layout_width="0dp"
+                android:layout_height="70sp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#ffffff"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/location" />
+
+            <ImageButton
+                android:id="@+id/stampButton"
+                android:layout_width="0dp"
+                android:layout_height="70sp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#ffffff"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/stamp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>
