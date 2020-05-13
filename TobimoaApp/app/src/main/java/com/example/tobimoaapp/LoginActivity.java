@@ -3,41 +3,35 @@ package com.example.tobimoaapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
-
+    String myPH, myPASS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button buttonGH = findViewById(R.id.gotoHome);
-        buttonGH.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
         ImageButton button1 = findViewById(R.id.homeButton);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ImageButton button2 = findViewById(R.id.userButton);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -46,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),LocationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
                 startActivity(intent);
             }
         });
@@ -55,9 +49,79 @@ public class LoginActivity extends AppCompatActivity {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),StampActivity.class);
+                Intent intent = new Intent(getApplicationContext(), StampActivity.class);
                 startActivity(intent);
             }
         });
+
+        final EditText e1 = (EditText) findViewById(R.id.editTextPh);
+        final EditText e2 = (EditText) findViewById(R.id.editTextpass);
+
+        Button button2 = findViewById(R.id.Login);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myPH = e1.getText().toString();
+                myPASS = e2.getText().toString();
+                new JSONTask().execute("http://192.168.0.118:5000/api/USER/login");
+            }
+        });
+    }
+
+    public class JSONTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("PhoneNum", myPH);
+                body.put("Password", myPASS);
+
+                HttpURLConnection conn = null;
+                StringBuffer response = new StringBuffer();
+
+                try {
+                    URL url = new URL(urls[0]);
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setRequestProperty("Accept", "text/html");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.connect();
+
+                    DataOutputStream outputStream;//보낼 데이터 저장소
+                    outputStream = new DataOutputStream(conn.getOutputStream());
+                    outputStream.writeBytes(body.toString());
+                    outputStream.flush();
+                    outputStream.close();//보낸 데이터 다음에 response써야함 안그러면 에러
+
+                    InputStream stream = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                    String line = null;
+
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    reader.close();
+                    return response.toString();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (conn != null) {
+                        conn.disconnect();
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        protected void onPostExecute(String result){
+            System.out.println("들어오니??");
+            super.onPostExecute(result);
+            System.out.println(result);
+            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+        }
     }
 }
