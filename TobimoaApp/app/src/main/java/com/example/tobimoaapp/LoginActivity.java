@@ -2,7 +2,9 @@ package com.example.tobimoaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -22,10 +24,24 @@ import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
     String myPH, myPASS;
+    String userPH = null, userPASS = null, userNAME = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        userPH = auto.getString("userPH",null);
+        userPASS = auto.getString("userPASS", null);
+        userNAME = auto.getString("userNAME", null);
+
+        if(userPH != null && userPASS != null){
+            Toast.makeText(this, userNAME + "님 자동로그인 입니다!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(LoginActivity.this, SubLoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         ImageButton button1 = findViewById(R.id.homeButton);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                         response.append(line);
                     }
                     reader.close();
+                    System.out.println(response.toString());
                     return response.toString();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -118,10 +135,32 @@ public class LoginActivity extends AppCompatActivity {
             return null;
         }
         protected void onPostExecute(String result){
-            System.out.println("들어오니??");
             super.onPostExecute(result);
-            System.out.println(result);
-            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+            try {
+
+                String phone = "", pass = "", name = "", error = "";
+                JSONObject dataJson = new JSONObject(result);
+                error = dataJson.optString("error");
+                phone = dataJson.optString("PhoneNum");
+                pass = dataJson.optString("Password");
+                name = dataJson.optString("name");
+
+                if(error=="") {
+
+                    SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor userData = auto.edit();
+                    userData.putString("userPH", phone);
+                    userData.putString("userPASS", pass);
+                    userData.putString("userNAME", name);
+
+                    userData.commit();
+
+                    finish();
+                }
+                else Toast.makeText(getApplicationContext(),error,Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
