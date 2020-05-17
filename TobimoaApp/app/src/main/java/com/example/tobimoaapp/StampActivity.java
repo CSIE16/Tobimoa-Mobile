@@ -31,7 +31,8 @@ public class StampActivity extends AppCompatActivity {
         IMG[5] = (ImageView)findViewById(R.id.Stamp5);
         IMG[6] = (ImageView)findViewById(R.id.Stamp6);
 
-        for(int i = 1; i< 7; i++){
+        IMG[0].setColorFilter(Color.parseColor("#5A3799"), PorterDuff.Mode.SRC_IN);
+        for(int i = 1; i<= 5; i++){
             IMG[i].setColorFilter(Color.parseColor("#5A3799"), PorterDuff.Mode.SRC_IN);
         }
 
