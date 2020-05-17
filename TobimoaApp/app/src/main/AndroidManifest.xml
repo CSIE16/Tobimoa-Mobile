@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SubLoginActivity"></activity>
+        <activity android:name=".SubLoginActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
