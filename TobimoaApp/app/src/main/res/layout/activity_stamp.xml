@@ -37,6 +37,101 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <ImageView
+                android:id="@+id/PPO"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ppo" />
+
+            <TextView
+                android:id="@+id/stampText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/bmjua"
+                android:gravity="center"
+                android:text="스탬프를 모아보아요"
+                android:textColor="#0B4878"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/hiddenStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tint="#BFBAC7"
+                app:srcCompat="@drawable/hiddenstamp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/Stamp1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tint="#BFBAC7"
+                app:srcCompat="@drawable/anotherstamp" />
+
+            <ImageView
+                android:id="@+id/Stamp2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tint="#BFBAC7"
+                app:srcCompat="@drawable/anotherstamp" />
+
+            <ImageView
+                android:id="@+id/Stamp3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tint="#BFBAC7"
+                app:srcCompat="@drawable/anotherstamp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/Stamp4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tint="#BFBAC7"
+                app:srcCompat="@drawable/anotherstamp" />
+
+            <ImageView
+                android:id="@+id/Stamp5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tint="#BFBAC7"
+                app:srcCompat="@drawable/anotherstamp" />
+
+            <ImageView
+                android:id="@+id/Stamp6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tint="#BFBAC7"
+                app:srcCompat="@drawable/anotherstamp" />
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
