@@ -1,6 +1,8 @@
 package com.example.tobimoaapp;
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +22,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 public class LocationActivity extends AppCompatActivity
         implements OnMapReadyCallback
@@ -28,6 +37,7 @@ public class LocationActivity extends AppCompatActivity
     private Spinner spinner;
     ArrayList<String> arrayList;
     ArrayAdapter<String> arrayAdapter;
+    JSONArray SD;
     StringBuffer sb = new StringBuffer();
     int choose = 0;
     String str =
@@ -37,14 +47,17 @@ public class LocationActivity extends AppCompatActivity
                     "'Visited5':'1','Visited6':'1','Visited7':'1','Visited8':'0','Visited9':'0'},"
                     + "{'Player':'황수민','PhoneNum':'01073900430','SerialNum':'103','LocationX':'37.58','LocationY':'126.99','Visited1':'1','Visited2':'0','Visited3':'1','Visited4':'1'," +
                     "'Visited5':'1','Visited6':'1','Visited7':'1','Visited8':'0','Visited9':'0'}]";
+
     @Override
-    protected void onCreate (Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+
         arrayList = new ArrayList<>();
+        new JSONTask().execute("http://tobimoa.ml/api/location/get");
         try {
             JSONArray array = new JSONArray(str);   // JSONArray 생성
-            for(int i=0; i < array.length(); i++){
+            for (int i = 0; i < array.length(); i++) {
                 JSONObject Object = array.getJSONObject(i);  // JSONObject 추출
                 String Player = Object.getString("Player");
                 arrayList.add(Player);
@@ -54,12 +67,12 @@ public class LocationActivity extends AppCompatActivity
         }
 
         arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, arrayList);
-        spinner = (Spinner)findViewById(R.id.spinner);
+        spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(arrayAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(),arrayList.get(i)+"이 선택되었습니다.",
+                Toast.makeText(getApplicationContext(), arrayList.get(i) + "이 선택되었습니다.",
                         Toast.LENGTH_SHORT).show();
                 choose = i;
                 onMapReady(mMap);
@@ -71,7 +84,7 @@ public class LocationActivity extends AppCompatActivity
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync((OnMapReadyCallback) this);
 
         ImageButton button1 = findViewById(R.id.homeButton);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -101,10 +114,66 @@ public class LocationActivity extends AppCompatActivity
         });
     }
 
+    public class JSONTask extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("PhoneNum", "01073900430");
+                HttpURLConnection conn = null;
+                StringBuffer response = new StringBuffer();
+                try {
+                    URL url = new URL(urls[0]);
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setRequestProperty("Accept", "text/html");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.connect();
+                    DataOutputStream outputStream;//보낼 데이터 저장소
+                    outputStream = new DataOutputStream(conn.getOutputStream());
+                    outputStream.writeBytes(body.toString());
+                    outputStream.flush();
+                    outputStream.close();//보낸 데이터 다음에 response써야함 안그러면 에러
+
+                    InputStream stream = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                    String line = null;
+
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    reader.close();
+                    System.out.println("값 받아옴" + response.toString());
+                    return response.toString();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (conn != null) {
+                        conn.disconnect();
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try {
+                SD = new JSONArray(result);
+                System.out.println("성공"+SD);
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
-
         try {
             mMap.clear();
             JSONArray jarray = new JSONArray(str);   // JSONArray 생성
@@ -263,3 +332,4 @@ public class LocationActivity extends AppCompatActivity
         }
     }
 }
+
