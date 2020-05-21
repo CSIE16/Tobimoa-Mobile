@@ -17,6 +17,7 @@ import com.example.tobimoaapp.R;
 public class StampActivity extends AppCompatActivity {
     ImageView[] IMG = new ImageView[7];
     boolean hstamp = false;
+    int stampCNT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
