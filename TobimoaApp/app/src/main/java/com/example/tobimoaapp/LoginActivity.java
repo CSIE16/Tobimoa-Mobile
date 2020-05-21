@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -31,10 +33,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-        userPH = auto.getString("userPH",null);
-        userPASS = auto.getString("userPASS", null);
-        userNAME = auto.getString("userNAME", null);
+        SharedPreferences Users = getSharedPreferences("Users", Activity.MODE_PRIVATE);
+
+        userPH = Users.getString("PhoneNum",null);
+        userPASS = Users.getString("Password", null);
+        userNAME = Users.getString("Name", null);
 
         if(userPH != null && userPASS != null){
             Toast.makeText(this, userNAME + "님 자동로그인 입니다!", Toast.LENGTH_SHORT).show();
@@ -79,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 myPH = e1.getText().toString();
                 myPASS = e2.getText().toString();
-                new JSONTask().execute("http://192.168.0.118:5000/api/USER/login");
+                new JSONTask().execute("http://tobimoa.ml/api/login");
             }
         });
     }
@@ -138,23 +141,25 @@ public class LoginActivity extends AppCompatActivity {
             super.onPostExecute(result);
             try {
 
-                String phone = "", pass = "", name = "", error = "";
+                String error = "";
                 JSONObject dataJson = new JSONObject(result);
+                JSONArray Child = dataJson.getJSONArray("Child");
+
                 error = dataJson.optString("error");
-                phone = dataJson.optString("PhoneNum");
-                pass = dataJson.optString("Password");
-                name = dataJson.optString("name");
 
                 if(error=="") {
+                    SharedPreferences Users = getSharedPreferences("Users", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor userData = Users.edit();
 
-                    SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor userData = auto.edit();
-                    userData.putString("userPH", phone);
-                    userData.putString("userPASS", pass);
-                    userData.putString("userNAME", name);
+                    userData.putString("PhoneNum", dataJson.optString("PhoneNum"));
+                    userData.putString("Name", dataJson.optString("Name"));
+                    userData.putString("Password", dataJson.optString("Password"));
 
+                    for(int i=0; i<Child.length(); i++){
+                        String userNum = Child.getJSONObject(i).optString("Name");
+                        userData.putString(userNum, Child.getJSONObject(i).optString("StampCnt"));
+                    }
                     userData.commit();
-
                     finish();
                 }
                 else Toast.makeText(getApplicationContext(),error,Toast.LENGTH_LONG).show();
