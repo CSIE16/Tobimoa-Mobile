@@ -17,15 +17,14 @@ public class SubLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_login);
 
-        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = auto.edit();
-        editor.clear();
-        editor.commit();
-
         Button logout = findViewById(R.id.logoutButton);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = auto.edit();
+                editor.clear();
+                editor.commit();
 
                 Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(intent);
