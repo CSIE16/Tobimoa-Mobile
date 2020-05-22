@@ -62,7 +62,6 @@ public class StampActivity extends AppCompatActivity {
         SharedPreferences Users = getSharedPreferences("Users", Activity.MODE_PRIVATE);
         userPH = Users.getString("PhoneNum", null);
         userPASS = Users.getString("Password", null);
-        System.out.println(userPH + " "+ userPASS);
 
         if(userPH == null && userPASS == null){
             Toast.makeText(getApplicationContext(), "로그인 먼저 부탁드립니다!", Toast.LENGTH_SHORT).show();
