@@ -49,17 +49,31 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ppo" />
 
-            <TextView
-                android:id="@+id/stampText"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/bmjua"
-                android:gravity="center"
-                android:text="스탬프를 모아보아요"
-                android:textColor="#0B4878"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/stampText"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.7"
+                    android:fontFamily="@font/bmjua"
+                    android:gravity="center"
+                    android:text="스탬프를 모아보아요"
+                    android:textColor="#0B4878"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
