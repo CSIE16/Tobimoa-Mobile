@@ -154,10 +154,6 @@ public class LoginActivity extends AppCompatActivity {
                     userData.putString("PhoneNum", dataJson.optString("PhoneNum"));
                     userData.putString("Name", dataJson.optString("Name"));
                     userData.putString("Password", dataJson.optString("Password"));
-                    for(int i=0; i<Child.length(); i++){
-                        String userNum = Child.getJSONObject(i).optString("Name");
-                        userData.putString(userNum, Child.getJSONObject(i).optString("StampCnt"));
-                    }
 
                     userData.commit();
                     finish();
