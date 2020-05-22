@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,6 +31,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 public class LocationActivity extends AppCompatActivity
         implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -39,11 +42,22 @@ public class LocationActivity extends AppCompatActivity
     JSONArray SD;
     StringBuffer sb = new StringBuffer();
     int choose = -1;
+    int past = -2;
+    int chk=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
-        new JSONTask().execute("http://tobimoa.ml/api/location/get");
+        TimerTask tt = new TimerTask() {
+            @Override
+            public void run() {
+                new JSONTask().execute("http://tobimoa.ml/api/location/get");
+                System.out.println("데이터!!");
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(tt,0,10000);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
@@ -80,7 +94,7 @@ public class LocationActivity extends AppCompatActivity
         protected String doInBackground(String... urls) {
             try {
                 JSONObject body = new JSONObject();
-                body.put("PhoneNum", "1234");
+                body.put("PhoneNum", "01073900430");
                 HttpURLConnection conn = null;
                 StringBuffer response = new StringBuffer();
                 try {
@@ -138,12 +152,13 @@ public class LocationActivity extends AppCompatActivity
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        Toast.makeText(getApplicationContext(), arrayList.get(i) + "이 선택되었습니다.",
-                                Toast.LENGTH_SHORT).show();
+                        if(choose != past) {
+                            Toast.makeText(getApplicationContext(), arrayList.get(i) + "이 선택되었습니다.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                         choose = i;
                         onMapReady(mMap);
                     }
-
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
                     }
@@ -176,6 +191,7 @@ public class LocationActivity extends AppCompatActivity
             int Visited7 = vObject.optInt(7);
             int Visited8 = vObject.optInt(8);
             int Visited9 = vObject.optInt(9);
+
 
             LatLng stamp1 = new LatLng(37.5, 127);
             MarkerOptions markerOptions1 = new MarkerOptions();
@@ -299,8 +315,11 @@ public class LocationActivity extends AppCompatActivity
             markerOptions.title(Player);
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.babysmall));
             mMap.addMarker(markerOptions);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(LOCATION));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+            if(choose != past) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(LOCATION));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+            }
+            past = choose;
         } catch (JSONException e) {
             e.printStackTrace();
         }
