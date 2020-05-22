@@ -18,11 +18,22 @@ import com.example.tobimoaapp.R;
 import com.example.tobimoaapp.StampActivity;
 
 public class MainActivity extends AppCompatActivity {
+    String userPH = null, userPASS = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences Users = getSharedPreferences("Users", Activity.MODE_PRIVATE);
+        userPH = Users.getString("PhoneNum", null);
+        userPASS = Users.getString("Password", null);
+
+        if(userPH == null && userPASS == null){
+            Toast.makeText(getApplicationContext(), "로그인 먼저 부탁드립니다!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        }
 
         ImageButton button2 = findViewById(R.id.userButton);
         button2.setOnClickListener(new View.OnClickListener() {
