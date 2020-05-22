@@ -59,7 +59,7 @@
                     android:id="@+id/stampText"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
                     android:fontFamily="@font/bmjua"
                     android:gravity="center"
                     android:text="스탬프를 모아보아요"
@@ -67,13 +67,10 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <ImageButton
-                    android:id="@+id/imageButton"
+                <Spinner
+                    android:id="@+id/spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.3"
-                    android:background="#FFFFFF"
-                    app:srcCompat="@drawable/refresh" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
