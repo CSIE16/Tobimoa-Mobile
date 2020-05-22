@@ -21,8 +21,8 @@ public class SubLoginActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = auto.edit();
+                SharedPreferences Users = getSharedPreferences("Users", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = Users.edit();
                 editor.clear();
                 editor.commit();
 
