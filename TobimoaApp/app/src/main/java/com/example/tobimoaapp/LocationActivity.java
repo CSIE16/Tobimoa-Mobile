@@ -41,9 +41,10 @@ public class LocationActivity extends AppCompatActivity
     ArrayAdapter<String> arrayAdapter;
     JSONArray SD;
     StringBuffer sb = new StringBuffer();
+    int cnt=0;
+    int now=-3;
     int choose = -1;
     int past = -2;
-    int chk=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,7 @@ public class LocationActivity extends AppCompatActivity
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
+                cnt++;
                 new JSONTask().execute("http://tobimoa.ml/api/location/get");
                 System.out.println("데이터!!");
             }
@@ -140,6 +142,7 @@ public class LocationActivity extends AppCompatActivity
                 System.out.println("성공" + SD);
                 if (choose == -1) {
                     arrayList = new ArrayList<>();
+                    arrayList.add("아이를 선택하세요");
                     for (int i = 0; i < SD.length(); i++) {
                         JSONObject Object = SD.getJSONObject(i);  // JSONObject 추출
                         String Name = Object.getString("Name");
@@ -152,17 +155,26 @@ public class LocationActivity extends AppCompatActivity
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (choose != past) {
+                        if (past == -2) // 0으로 처음 셋팅
+                        {
                             Toast.makeText(getApplicationContext(), arrayList.get(i) + "이 선택되었습니다.",
                                     Toast.LENGTH_SHORT).show();
+                            choose = i;
+                        } else if (now == cnt) // 선택할 때
+                        {
+                            Toast.makeText(getApplicationContext(), arrayList.get(i) + "이 선택되었습니다.",
+                                    Toast.LENGTH_SHORT).show();
+                            choose = i;
+                            if(choose > 0) choose--;
                         }
-                        choose = i;
+                        System.out.println(i);
                         onMapReady(mMap);
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
                     }
                 });
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -196,7 +208,7 @@ public class LocationActivity extends AppCompatActivity
             stamp[7] = new LatLng(37.44,126.9);
             stamp[8] = new LatLng(37.67,126.922);
             stamp[9] = new LatLng(37.58,126.937);
-            //스탬프정
+            //스탬프정보
             for(int i=1; i<=9; i++) {
                 if (i == 1) markerOption.title("1st Stamp Here");
                 else if (i == 2) markerOption.title("2nd Stamp Here");
@@ -222,8 +234,9 @@ public class LocationActivity extends AppCompatActivity
             if(choose != past) {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(LOCATION));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+                past = choose;
             }
-            past = choose;
+            now = cnt;
         } catch (JSONException e) {
             e.printStackTrace();
         }
