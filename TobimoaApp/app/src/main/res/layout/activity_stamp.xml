@@ -153,52 +153,16 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <LinearLayout
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/homeButton"
-                android:layout_width="0sp"
-                android:layout_height="70sp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#ffffff"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/home" />
-
-            <ImageButton
-                android:id="@+id/userButton"
-                android:layout_width="0dp"
-                android:layout_height="70sp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#ffffff"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/user" />
-
-            <ImageButton
-                android:id="@+id/locationButton"
-                android:layout_width="0dp"
-                android:layout_height="70sp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#ffffff"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/location" />
-
-            <ImageButton
-                android:id="@+id/stampButton"
-                android:layout_width="0dp"
-                android:layout_height="70sp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#8096E4"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/stamp" />
-        </LinearLayout>
+            app:itemIconTint="@color/common_google_signin_btn_text_dark_default"
+            app:itemTextColor="#D5C6EF"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_navigation_menu" />
     </RelativeLayout>
 
 

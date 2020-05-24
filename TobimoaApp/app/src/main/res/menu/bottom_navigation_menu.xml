@@ -1,0 +1,28 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_1"
+        android:enabled="true"
+        android:icon="@drawable/home"
+        android:title="HOME"
+        android:visible="true"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/page_2"
+        android:icon="@drawable/user"
+        android:title="USER"
+        android:visible="true"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/page_3"
+        android:enabled="true"
+        android:icon="@drawable/location"
+        android:title="LOCATION"
+        android:visible="true" />
+    <item
+        android:id="@+id/page_4"
+        android:enabled="true"
+        android:icon="@drawable/stamp"
+        android:title="STAMP"
+        android:visible="true" />
+</menu>
