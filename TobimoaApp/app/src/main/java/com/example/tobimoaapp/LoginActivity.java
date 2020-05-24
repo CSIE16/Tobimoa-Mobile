@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         if(userPH != null && userPASS != null){
             Toast.makeText(this, userNAME + "님 자동로그인 입니다!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, SubLoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         }
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -60,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -69,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), StampActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -123,7 +127,6 @@ public class LoginActivity extends AppCompatActivity {
                         response.append(line);
                     }
                     reader.close();
-                    System.out.println(response.toString());
                     return response.toString();
                 } catch (IOException e) {
                     e.printStackTrace();

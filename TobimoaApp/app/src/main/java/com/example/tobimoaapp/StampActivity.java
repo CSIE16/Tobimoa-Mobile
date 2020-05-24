@@ -17,10 +17,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.tobimoaapp.LocationActivity;
-import com.example.tobimoaapp.LoginActivity;
-import com.example.tobimoaapp.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,17 +44,6 @@ public class StampActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stamp);
 
-        IMG[0] = (ImageView)findViewById(R.id.hiddenStamp);
-        IMG[1] = (ImageView)findViewById(R.id.Stamp1);
-        IMG[2] = (ImageView)findViewById(R.id.Stamp2);
-        IMG[3] = (ImageView)findViewById(R.id.Stamp3);
-        IMG[4] = (ImageView)findViewById(R.id.Stamp4);
-        IMG[5] = (ImageView)findViewById(R.id.Stamp5);
-        IMG[6] = (ImageView)findViewById(R.id.Stamp6);
-
-        Spinner spinner = (Spinner)findViewById(R.id.spinner);
-        childList = new ArrayList<>();
-
         SharedPreferences Users = getSharedPreferences("Users", Activity.MODE_PRIVATE);
         userPH = Users.getString("PhoneNum", null);
         userPASS = Users.getString("Password", null);
@@ -66,18 +51,65 @@ public class StampActivity extends AppCompatActivity {
         if(userPH == null && userPASS == null){
             Toast.makeText(getApplicationContext(), "로그인 먼저 부탁드립니다!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
 
         try {
             result = new JSONTask().execute("http://tobimoa.ml/api/stamp/get").get();
             Child = new JSONArray(result);
-            System.out.println(Child.getJSONObject(0));
+            IMG[0] = (ImageView)findViewById(R.id.hiddenStamp);
+            IMG[1] = (ImageView)findViewById(R.id.Stamp1);
+            IMG[2] = (ImageView)findViewById(R.id.Stamp2);
+            IMG[3] = (ImageView)findViewById(R.id.Stamp3);
+            IMG[4] = (ImageView)findViewById(R.id.Stamp4);
+            IMG[5] = (ImageView)findViewById(R.id.Stamp5);
+            IMG[6] = (ImageView)findViewById(R.id.Stamp6);
+
+            Spinner spinner = (Spinner)findViewById(R.id.spinner);
+
+            childList = new ArrayList<>();
             for(int i=0; i<Child.length(); i++){
                 String name = Child.getJSONObject(i).optString("Name");
                 System.out.println(name);
                 childList.add(name);
             }
+
+            arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, childList);
+            spinner.setAdapter(arrayAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
+                    for(int x=0;x<7;x++)IMG[x].setColorFilter(Color.parseColor("#BFBAC7"), PorterDuff.Mode.SRC_IN);
+                    String name = childList.get(i);
+                    Toast.makeText(getApplicationContext(), name + "가 선택되었습니다!", Toast.LENGTH_SHORT).show();
+                    for(int x=0; x<Child.length(); x++){
+                        String n = null;
+                        int hs = 0, ns = 0;
+                        try {
+                            n = Child.getJSONObject(x).optString("Name");
+                            hs = Child.getJSONObject(x).getJSONObject("StampCnt").optInt("hidden");
+                            ns = Child.getJSONObject(x).getJSONObject("StampCnt").optInt("normal");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if(n == name){
+                            hstamp = hs;
+                            stampCNT = ns;
+                            System.out.println(name + "" + hstamp + "" + stampCNT);
+                            break;
+                        }
+                    }
+                    if(hstamp == 1) IMG[0].setColorFilter(Color.parseColor("#5A3799"), PorterDuff.Mode.SRC_IN);
+                    for(int x = 1; x<= stampCNT; x++){
+                        IMG[x].setColorFilter(Color.parseColor("#5A3799"), PorterDuff.Mode.SRC_IN);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -86,46 +118,12 @@ public class StampActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, childList);
-        spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
-                for(int x=0;x<7;x++)IMG[x].setColorFilter(Color.parseColor("#BFBAC7"), PorterDuff.Mode.SRC_IN);
-                String name = childList.get(i);
-                Toast.makeText(getApplicationContext(), name + "가 선택되었습니다!", Toast.LENGTH_SHORT).show();
-                for(int x=0; x<Child.length(); x++){
-                    String n = null;
-                    int hs = 0, ns = 0;
-                    try {
-                        n = Child.getJSONObject(x).optString("Name");
-                        hs = Child.getJSONObject(x).getJSONObject("StampCnt").optInt("hidden");
-                        ns = Child.getJSONObject(x).getJSONObject("StampCnt").optInt("normal");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    if(n == name){
-                        hstamp = hs;
-                        stampCNT = ns;
-                        System.out.println(name + "" + hstamp + "" + stampCNT);
-                        break;
-                    }
-                }
-                if(hstamp == 1) IMG[0].setColorFilter(Color.parseColor("#5A3799"), PorterDuff.Mode.SRC_IN);
-                for(int x = 1; x<= stampCNT; x++){
-                    IMG[x].setColorFilter(Color.parseColor("#5A3799"), PorterDuff.Mode.SRC_IN);
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
         ImageButton button1 = findViewById(R.id.homeButton);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -135,6 +133,7 @@ public class StampActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -144,6 +143,7 @@ public class StampActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
