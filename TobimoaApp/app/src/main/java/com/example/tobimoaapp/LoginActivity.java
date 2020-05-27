@@ -148,10 +148,8 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String result){
             super.onPostExecute(result);
             try {
-
                 String error = "";
                 JSONObject dataJson = new JSONObject(result);
-                JSONArray Child = dataJson.getJSONArray("Child");
 
                 error = dataJson.optString("error");
 
