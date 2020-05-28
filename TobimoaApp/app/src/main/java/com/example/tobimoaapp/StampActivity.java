@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -57,6 +56,8 @@ public class StampActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+            finish();
         }
 
         try {
@@ -75,7 +76,6 @@ public class StampActivity extends AppCompatActivity {
             childList = new ArrayList<>();
             for(int i=0; i<Child.length(); i++){
                 String name = Child.getJSONObject(i).optString("Name");
-                System.out.println(name);
                 childList.add(name);
             }
 
@@ -132,21 +132,29 @@ public class StampActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
                         break;
                     case R.id.page_2:
                         intent = new Intent(getApplicationContext(), LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
                         break;
                     case R.id.page_3:
                         intent = new Intent(getApplicationContext(), LocationActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
                         break;
                     case R.id.page_4:
                         intent = new Intent(getApplicationContext(), StampActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
                         break;
                 }
                 return false;

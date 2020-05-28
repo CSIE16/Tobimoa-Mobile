@@ -12,12 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -48,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, SubLoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             finish();
         }
 
@@ -61,21 +60,29 @@ public class LoginActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
                         break;
                     case R.id.page_2:
                         intent = new Intent(getApplicationContext(), LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
                         break;
                     case R.id.page_3:
                         intent = new Intent(getApplicationContext(), LocationActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
                         break;
                     case R.id.page_4:
                         intent = new Intent(getApplicationContext(), StampActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
                         break;
                 }
                 return false;
@@ -160,8 +167,13 @@ public class LoginActivity extends AppCompatActivity {
                     userData.putString("PhoneNum", dataJson.optString("PhoneNum"));
                     userData.putString("Name", dataJson.optString("Name"));
                     userData.putString("Password", dataJson.optString("Password"));
-
                     userData.commit();
+                    finish();
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                     finish();
                 }
                 else Toast.makeText(getApplicationContext(),error,Toast.LENGTH_LONG).show();
