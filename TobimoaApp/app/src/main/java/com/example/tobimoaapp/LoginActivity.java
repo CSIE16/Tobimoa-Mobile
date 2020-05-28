@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
+    private View loginLaout;
     String myPH, myPASS;
     String userPH = null, userPASS = null, userNAME = null;
 
@@ -34,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        loginLaout = findViewById(R.id.login_layout);
 
         SharedPreferences Users = getSharedPreferences("Users", Activity.MODE_PRIVATE);
 
@@ -174,9 +178,15 @@ public class LoginActivity extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-                    finish();
+                    finish();intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
                 }
-                else Toast.makeText(getApplicationContext(),error,Toast.LENGTH_LONG).show();
+                else {
+                    Snackbar.make(loginLaout, error, Snackbar.LENGTH_INDEFINITE).show();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
