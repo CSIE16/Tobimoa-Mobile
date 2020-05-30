@@ -58,6 +58,7 @@ public class StampActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             finish();
+            return;
         }
 
         try {

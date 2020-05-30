@@ -1,15 +1,19 @@
 package com.example.tobimoaapp;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +27,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,12 +54,28 @@ public class LocationActivity extends AppCompatActivity
     JSONArray SD;
     StringBuffer sb = new StringBuffer();
     int cnt = 0, now = -3, choose = -1, past = -2;
+    String userPH = null, userPASS = null, userNAME = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(getApplicationContext(), "GPS 기능을 확인해주세요!", Toast.LENGTH_SHORT).show();
         setContentView(R.layout.activity_location);
+
+        SharedPreferences Users = getSharedPreferences("Users", Activity.MODE_PRIVATE);
+        userPH = Users.getString("PhoneNum", null);
+        userPASS = Users.getString("Password", null);
+
+        if(userPH == null && userPASS == null){
+            Toast.makeText(getApplicationContext(), "로그인 먼저 부탁드립니다!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+            finish();
+            return;
+        }
+
+        Toast.makeText(getApplicationContext(), "GPS 기능을 확인해주세요!", Toast.LENGTH_SHORT).show();
         startLocationService();
         TimerTask tt = new TimerTask() {
             @Override
@@ -67,28 +89,43 @@ public class LocationActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
-        ImageButton button1 = findViewById(R.id.homeButton);
-        button1.setOnClickListener(new View.OnClickListener() {
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        ImageButton button2 = findViewById(R.id.userButton);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-        ImageButton button4 = findViewById(R.id.stampButton);
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), StampActivity.class);
-                startActivity(intent);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
+                switch (item.getItemId()) {
+                    case R.id.page_1:
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
+                        break;
+                    case R.id.page_2:
+                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
+                        break;
+                    case R.id.page_3:
+                        intent = new Intent(getApplicationContext(), LocationActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
+                        break;
+                    case R.id.page_4:
+                        intent = new Intent(getApplicationContext(), StampActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                        finish();
+                        break;
+                }
+                return false;
             }
         });
     }
@@ -98,7 +135,7 @@ public class LocationActivity extends AppCompatActivity
         protected String doInBackground(String... urls) {
             try {
                 JSONObject body = new JSONObject();
-                body.put("PhoneNum", "01073900430");
+                body.put("PhoneNum", userPH);
                 HttpURLConnection conn = null;
                 StringBuffer response = new StringBuffer();
                 try {

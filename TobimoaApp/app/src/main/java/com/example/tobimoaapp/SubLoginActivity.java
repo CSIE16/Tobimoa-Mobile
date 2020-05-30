@@ -34,6 +34,7 @@ public class SubLoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                 finish();
+                return;
             }
         });
 

@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             finish();
+            return;
         }
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
