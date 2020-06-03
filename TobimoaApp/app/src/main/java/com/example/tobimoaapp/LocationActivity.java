@@ -221,7 +221,6 @@ public class LocationActivity extends AppCompatActivity
             }
         }
     }
-
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
@@ -239,15 +238,15 @@ public class LocationActivity extends AppCompatActivity
             for (int i = 1; i <= 9; i++) Visited[i] = vObject.optInt(i);
             MarkerOptions markerOption = new MarkerOptions();
             LatLng stamp[] = new LatLng[10];
-            stamp[1] = new LatLng(37.5, 127);
-            stamp[2] = new LatLng(37.6, 126.99);
-            stamp[3] = new LatLng(37.57, 126.95);
-            stamp[4] = new LatLng(37.59, 126.91);
-            stamp[5] = new LatLng(37.57, 126.943);
-            stamp[6] = new LatLng(37.49, 126.939);
-            stamp[7] = new LatLng(37.44, 126.9);
-            stamp[8] = new LatLng(37.67, 126.922);
-            stamp[9] = new LatLng(37.58, 126.937);
+            stamp[1] = new LatLng(37.485627, 126.801702);
+            stamp[2] = new LatLng(37.486966, 126.801501);
+            stamp[3] = new LatLng(37.487150, 126.799426);
+            stamp[4] = new LatLng(37.486503, 126.803671);
+            stamp[5] = new LatLng(37.484944, 126.802142);
+            stamp[6] = new LatLng(37.486268, 126.803375);
+            stamp[7] = new LatLng(37.486370, 126.802453);
+            stamp[8] = new LatLng(37.485757, 126.800759);
+            stamp[9] = new LatLng(37.484816, 126.802644);
             //스탬프정보
             for (int i = 1; i <= 9; i++) {
                 if (i == 1) markerOption.title("1st Stamp Here");
